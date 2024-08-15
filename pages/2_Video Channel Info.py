@@ -13,6 +13,7 @@ vid_count = vid_count_series.reset_index()
 vid_count.columns = ['Channel Name', 'Video Count']
 
 ch_2022 = ch_vi_df[ch_vi_df['Published Date'].dt.year == 2022]
+ch_vi_df = ch_vi_df.reset_index()
 
 st.title("Videos corresponding to Channel name")
 with st.container(height=300):

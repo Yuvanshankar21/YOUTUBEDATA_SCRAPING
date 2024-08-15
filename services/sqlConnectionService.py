@@ -39,13 +39,36 @@ class SQLConnection:
         return self.cursor.fetchall()
 
     def in_query(self, col_name, table_name, parameter, ids):
-        query = "SELECT {} FROM {} WHERE {} in('{}')".format(col_name, table_name, parameter, ids)
-        print(query)
+        query = "SELECT {} FROM {} WHERE {} in {}".format(col_name, table_name, parameter, ids)
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def vc_info(self):
+        query = "select ch.channel_name, vi.video_name, vi.published_date from channel ch left join playlist pl on " \
+                "ch.channel_id = " \
+                "pl.channel_id left join video vi on  pl.playlist_id = vi.playlist_id "
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def view_metrics(self):
+        query = "select ch.channel_name, ch.channel_views, vi.video_name, vi.view_count from channel ch left join " \
+                "playlist pl on " \
+                "ch.channel_id = " \
+                "pl.channel_id left join video vi on  pl.playlist_id = vi.playlist_id "
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def eng_metrics(self):
+        query = "select ch.channel_name, vi.video_name, vi.like_count, vi.dislike_count, cm.comment_id from channel ch left join playlist pl on ch.channel_id = pl.channel_id left join video vi on  pl.playlist_id = vi.playlist_id left join comment cm on vi.video_id = cm.video_id WHERE vi.video_name IS NOT NULL and cm.comment_text IS NOT NULL"
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def duration_info(self):
+        query = "select ch.channel_name, vi.video_name, vi.duration from channel ch left join playlist pl on " \
+                "ch.channel_id = pl.channel_id left join video vi on  pl.playlist_id = vi.playlist_id "
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
     def close_connection(self):
         self.cursor.close()
         self.mydb.close()
-
-

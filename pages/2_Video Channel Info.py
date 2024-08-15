@@ -2,30 +2,28 @@ from services.sqlConnectionService import SQLConnection
 import pandas as pd
 import streamlit as st
 
-
+ch_vi_df = pd.DataFrame()
 sql_conn = SQLConnection()
 
-channel_data = pd.DataFrame()
-playlist_data = pd.DataFrame()
-video_data = pd.DataFrame()
+rs = sql_conn.vc_info()
+ch_vi_df = pd.DataFrame(rs, columns=['Channel Name', 'Video Name', 'Published Date'])
 
-ch_vid = pd.DataFrame()
+vid_count_series = ch_vi_df.groupby('Channel Name')['Video Name'].count()
+vid_count = vid_count_series.reset_index()
+vid_count.columns = ['Channel Name', 'Video Count']
 
-rs = sql_conn.get_data('channel')
-channel_data['channel_id'] = [row[0] for row in rs]
-channel_data['channel_name'] = [row[1] for row in rs]
+ch_2022 = ch_vi_df[ch_vi_df['Published Date'].dt.year == 2022]
 
-pl_rows = sql_conn.in_query("playlist_id, channel_id", "playlist", "channel_id", channel_data['channel_id'])
-playlist_data['playlist_id'] = [row[0] for row in pl_rows]
-playlist_data['channel_id'] = [row[1] for row in pl_rows]
+st.title("Videos corresponding to Channel name")
+with st.container(height=300):
+    st.table(ch_vi_df[['Channel Name', 'Video Name']])
 
-columns = ["playlist_id", "video_name", "published_date"]
-vid_row = sql_conn.in_query(columns, "video", playlist_data['playlist_id'])
-video_data['playlist_id'] = [row[0] for row in vid_row]
-video_data['video_name'] = [row[1] for row in vid_row]
-video_data['published_date'] = [row[2] for row in vid_row]
+st.title("Video count corresponding to channel")
+with st.container(height=300):
+    st.table(vid_count)
 
-
-
-
+st.title("Channel published video in 2022")
+with st.container(height=300):
+    for name in ch_2022['Channel Name'].unique():
+        st.write(name)
 

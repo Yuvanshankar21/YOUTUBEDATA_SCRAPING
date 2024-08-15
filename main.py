@@ -10,4 +10,4 @@ unique_vid = duration_df.drop_duplicates(subset='Video Name')
 group_avg = unique_vid.groupby(['Channel Name'])['Duration'].mean()
 avg_duration = group_avg.reset_index()
 avg_duration.columns = ['Channel Name', 'Average']
-print(avg_duration[['Channel Name', 'Average']])
+print(avg_duration)

@@ -11,6 +11,7 @@ comments = comments_series.reset_index()
 comments.columns = ['Channel Name', 'Video Name', 'Comments Count']
 
 unique_vid = eng_met.drop_duplicates(subset='Video Name')
+unique_vid = unique_vid.reset_index()
 top_like = eng_met.sort_values('Likes', ascending=False)[['Channel Name', 'Video Name', 'Likes']].iloc[0]
 top_comments = comments.sort_values('Comments Count', ascending=False)[['Channel Name', 'Video Name', 'Comments Count']].iloc[0]
 

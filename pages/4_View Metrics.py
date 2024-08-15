@@ -16,6 +16,6 @@ with st.container(height=300):
 
 st.title("Top 10 Views of video")
 with st.container(height=300):
-    top10 = view_metrics_df.sort_values('View Count', ascending=False).head(10)
+    top10 = view_metrics_df.sort_values('View Count', ascending=False).head(10).reset_index()
     st.table(top10[['Video Name', 'View Count', 'Channel Name']])
 

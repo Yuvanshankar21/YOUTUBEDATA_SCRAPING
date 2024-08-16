@@ -69,6 +69,11 @@ class SQLConnection:
         self.cursor.execute(query)
         return self.cursor.fetchall()
 
+    def views_by_year(self):
+        query = "select ch.channel_name, vi.video_name, vi.published_date, vi.view_count from channel ch left join playlist pl on ch.channel_id = pl.channel_id left join video vi on pl.playlist_id = vi.playlist_id where vi.published_date is not null and vi.video_name is not null"
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
     def close_connection(self):
         self.cursor.close()
         self.mydb.close()

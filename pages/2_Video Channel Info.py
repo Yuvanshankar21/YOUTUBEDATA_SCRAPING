@@ -1,6 +1,7 @@
 from services.sqlConnectionService import SQLConnection
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 
 ch_vi_df = pd.DataFrame()
 sql_conn = SQLConnection()
@@ -27,4 +28,3 @@ st.title("Channel published video in 2022")
 with st.container(height=300):
     for name in ch_2022['Channel Name'].unique():
         st.write(name)
-

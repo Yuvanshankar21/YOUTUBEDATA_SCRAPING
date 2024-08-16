@@ -54,9 +54,7 @@ with fetch:
             st.write("enter valid channel ID")
         else:
             st.session_state["channel_data"] = channel_data
-            with st.container(height=300):
-                st.success("Data fetched successfully")
-                st.write("To store the unstructured data go to unstructured tab and store")
+            st.success("Data fetched successfully")
 
 with unstructured:
     with st.container(height=300):
